@@ -24,7 +24,11 @@ public class Problem1 {
         //hint: use the arr variable; don't diretly use the a1-a4 variables
         // Goal: output only add *values* of each passed array
         //TODO add/edit code here
-        
+        for (int i = 0; i < arr.length; i++) //for loop of the length of arr
+        {
+            if (arr[i] % 2 == 1) //performing modulo on each index of arr. evens return 0, odds return 1. if 1 is returned, print it
+                System.out.print(arr[i] + " "); //same as comment above. print it, add a space for clarity
+        }
         //end add/edit section
         System.out.println();
         System.out.println("End process");
