@@ -17,6 +17,29 @@ public class NumberGuesser4 {
     private String fileName = "ng4.txt";
     private String[] fileHeaders = { "Level", "Strikes", "Number", "MaxLevel" };// used for demo readability
 
+    //kh465 09/29/24
+    private void difficulty()
+    {
+        if (strikes == 0)
+        {
+            Scanner scan = new Scanner (System.in);
+            System.out.println("Choose your difficulty:\n1 - Easy (10 strikes)\n2 - Normal (5 strikes)\n3 - Hard (3 strikes)\n4 - Impossible (1 guess!)");
+            int diffNum = scan.nextInt();
+            if (diffNum == 1)
+                maxStrikes = 10;
+            else if (diffNum == 2)
+                maxStrikes = 5;
+            else if (diffNum == 3)
+                maxStrikes = 3;
+            else if (diffNum == 4)
+                maxStrikes = 1;
+            else
+            {
+                System.out.println("No valid difficulty selected. Defaulting to normal.");
+                maxStrikes = 5;
+            }
+        }
+    }
     private void saveState() {
         String[] data = { level + "", strikes + "", number + "", maxLevel + "" };
         String output = String.join(",", data);
@@ -119,7 +142,7 @@ public class NumberGuesser4 {
             level = 1;
         }
     }
-
+    //kh465 09/29/24
     private void processGuess(int guess) {
         if (guess < 0) {
             return;
@@ -128,10 +151,21 @@ public class NumberGuesser4 {
         if (guess == number) {
             win();
             pickNewRandom = true;
-        } else {
-            System.out.println("That's wrong");
+        } else if (guess < number)
+            {
+            System.out.println("Higher");
             strikes++;
             if (strikes >= maxStrikes) {
+                lose();
+                pickNewRandom = true;
+            }
+        }
+        else if (guess > number)
+        {
+            System.out.println("Lower");
+            strikes++;
+            if (strikes >= maxStrikes)
+            {
                 lose();
                 pickNewRandom = true;
             }
@@ -158,6 +192,7 @@ public class NumberGuesser4 {
             loadState();
             do {
                 if (pickNewRandom) {
+                    difficulty(); //kh465 09/29/24
                     generateNewNumber(level);
                     saveState();
                     pickNewRandom = false;
