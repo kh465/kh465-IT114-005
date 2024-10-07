@@ -3,6 +3,8 @@ package Module4.Part3HW;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays; //kh465 10/6/24
+import java.util.Random; //kh465 10/6/24
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
@@ -11,6 +13,32 @@ public class Server {
     // Use ConcurrentHashMap for thread-safe client management
     private final ConcurrentHashMap<Long, ServerThread> connectedClients = new ConcurrentHashMap<>();
     private boolean isRunning = true;
+
+    //kh465 10/6/24
+    private void coinToss(ServerThread user) //takes one argument (the user who initiated the command)
+    {
+        Random rng = new Random(); //create a new Random. this util was imported on line 6.
+        int randNum = rng.nextInt(10) + 1; //set randNum to whatever rng.nextInt is. this generates a number between 0-9, 1 is added to make it 1-10
+        String flipHeads = ("<- has flipped a coin and got Heads!");
+        String flipTails = ("<- has flipped a coin and got Tails!");
+        if (randNum % 2 == 0) //performing modulo on result. evens return 0 (heads), anything else is assumed tails. there is probably a better way of doing this.
+            relay(flipHeads, user); //uses the relay method to send the message to all users, and also passes the user as an argument.
+        else
+            relay(flipTails, user);
+    }
+    
+    //kh465 10/6/24
+    private void diceRoll(int diceAmount, int diceSides, ServerThread user) //takes 3 arguments, the amount of dice, the sides on the dice, and the user who initiated the command
+    {
+        Random rng = new Random(); //create a new Random. this util was imported on line 6.
+        int[] diceVal = new int[diceAmount]; //create an array of int named diceVal that is the length of the amount of dice (set by diceAmount)
+        for (int i = 0; i < diceAmount; i++) //loops through the length of diceAmount
+        {
+            diceVal[i] += rng.nextInt((diceSides) + 1); //sets the index i to whatever rng.nextInt is. rng.nextInt is bound by diceSides + 1 so that it rolls between 1 and the user-set dice sides inclusive
+        }
+        String diceRoll = ("<- has rolled a " + diceAmount + "d" + diceSides + " and got: " + Arrays.toString(diceVal));
+        relay(diceRoll, user); //uses the relay method to send the message to all users, and passes the user as an argument.
+    }
 
     private void start(int port) {
         this.port = port;
@@ -119,6 +147,16 @@ public class Server {
                 disconnect(removedClient);
             }
             return true;
+        }
+        else if ("/coin".equalsIgnoreCase(message)) //kh465 10/6/24
+            coinToss(sender); //invokes method coinToss and passes along the sender as an argument
+        else if (message.matches("/[1-99][d][1-99]")) //using regex to see if the message matches the typical connotation of die (#d#)
+        {
+            String dieAmtAndVal = (message.substring(1)); //removes the slash from the message and sets the String dieAmtAndVal to this string [this is probably a very scuffed way of doing this]
+            String[] values = (dieAmtAndVal.split("[d]")); //creates an array of String from dieAmtAndVal that is split from the letter 'd' [probably very scuffed but i couldn't figure out another way]
+            int dieAmt = Integer.parseInt(values[0]); //sets dieAmt to the first value of String[] values (presumably anything before the letter 'd')
+            int dieVal = Integer.parseInt(values[1]); //sets dieVal to the second value of String[] values (presumably anything past the letter 'd')
+            diceRoll(dieAmt, dieVal, sender); //calls the method diceRoll and passes along 3 arguments, dieAmt, dieVal and the sender
         }
         // add more "else if" as needed
         return false;
