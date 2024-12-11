@@ -1,0 +1,80 @@
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *You connected*
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *You joined the Room lobby*
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    plamt[1]: hi
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    user2[2]: hi
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    user3[3]: hi
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    user2[2]: hi
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *plamt[1] disconnected*
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *plamt[1] left the Room *
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *user2[2] disconnected*
+  </body>
+</html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    *user2[2] left the Room *
+  </body>
+</html>
